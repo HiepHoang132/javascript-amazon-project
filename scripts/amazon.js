@@ -58,8 +58,7 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
-// Need to save the timeout for each product
-const addedMessageTimeout = {};
+let addedMessageTimeoutId;
 
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
@@ -85,20 +84,24 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
     let cartQuantity = 0;
     cart.forEach((item) => (cartQuantity += item.quantity));
     document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
-<<<<<<< HEAD
-=======
     document
       .querySelector(`.js-added-to-cart-${productId}`)
       .classList.add("added-message");
 
-    clearTimeout(addedMessageTimeout[productId]);
-    timeoutId = setTimeout(() => {
-      document
-        .querySelector(`.js-added-to-cart-${productId}`)
-        .classList.remove("added-message");
-    }, 2000);
+    setTimeout(() => {
+      console.log(`Previous timeout ID: ${addedMessageTimeoutId}`);
+      if (addedMessageTimeoutId) {
+        clearTimeout(addedMessageTimeoutId);
+      }
 
-    addedMessageTimeout[productId] = timeoutId;
->>>>>>> d56a0ffd40cba1fedd0e70a4638c1b851ade9cfa
+      const timeoutId = setTimeout(() => {
+        document
+          .querySelector(`.js-added-to-cart-${productId}`)
+          .classList.remove("added-message");
+      }, 2000);
+
+      addedMessageTimeoutId = timeoutId;
+      console.log(`After timeout ID: ${addedMessageTimeoutId}`);
+    });
   });
 });
