@@ -42,7 +42,7 @@ products.forEach((product) => {
 
         <div class="product-spacer"></div>
 
-        <div class="added-to-cart">
+        <div class="added-to-cart js-added-to-cart-${product.id}">
         <img src="images/icons/checkmark.png">
         Added
         </div>
@@ -57,6 +57,9 @@ products.forEach((product) => {
 });
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
+
+// Need to save the timeout for each product
+const addedMessageTimeout = {};
 
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
@@ -82,5 +85,20 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
     let cartQuantity = 0;
     cart.forEach((item) => (cartQuantity += item.quantity));
     document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+<<<<<<< HEAD
+=======
+    document
+      .querySelector(`.js-added-to-cart-${productId}`)
+      .classList.add("added-message");
+
+    clearTimeout(addedMessageTimeout[productId]);
+    timeoutId = setTimeout(() => {
+      document
+        .querySelector(`.js-added-to-cart-${productId}`)
+        .classList.remove("added-message");
+    }, 2000);
+
+    addedMessageTimeout[productId] = timeoutId;
+>>>>>>> d56a0ffd40cba1fedd0e70a4638c1b851ade9cfa
   });
 });
