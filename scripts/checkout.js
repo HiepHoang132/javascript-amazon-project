@@ -2,7 +2,7 @@ import { cart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
-let checkoutHTML = ''
+let checkoutHTML = "";
 
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
@@ -32,7 +32,9 @@ cart.forEach((cartItem) => {
             </div>
             <div class="product-quantity">
                 <span>
-                Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+                Quantity: <span class="quantity-label">${
+                  cartItem.quantity
+                }</span>
                 </span>
                 <span class="update-quantity-link link-primary">
                 Update
@@ -87,7 +89,7 @@ cart.forEach((cartItem) => {
             </div>
         </div>
     </div>
-  `
+  `;
 });
 
-document.querySelector('.js-order-summary').innerHTML = checkoutHTML
+document.querySelector(".js-order-summary").innerHTML = checkoutHTML;
