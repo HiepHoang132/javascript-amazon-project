@@ -1,4 +1,4 @@
-import { cart } from "../data/cart.js";
+import { cart, addToCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 
 let productsHTML = "";
@@ -62,51 +62,40 @@ document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
 const addedMessageTimeout = [];
 
+function updateCartQuantity() {
+  // Update cart quantity
+  let cartQuantity = 0;
+  cart.forEach((cartItem) => (cartQuantity += cartItem.quantity));
+  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+}
+
+function alertAddedMessage(productId) {
+  // Notify the user whether the items are successfully added
+  document
+    .querySelector(`.js-added-to-cart-${productId}`)
+    .classList.add("added-message");
+
+  // The message disappears after 2 seconds
+  setTimeout(() => {
+    if (addedMessageTimeout[productId]) {
+      clearTimeout(addedMessageTimeout[productId]);
+    }
+
+    const timeoutId = setTimeout(() => {
+      document
+        .querySelector(`.js-added-to-cart-${productId}`)
+        .classList.remove("added-message");
+    }, 2000);
+
+    addedMessageTimeout[productId] = timeoutId;
+  });
+}
+
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const productId = button.dataset.productId;
-    let matchingItem;
-
-    cart.forEach((item) => {
-      if (productId === item.productId) {
-        matchingItem = item;
-        return;
-      }
-    });
-
-    const quantitySelector = document.querySelector(
-      `.js-quantity-selector-${productId}`
-    );
-    const quantity = Number(quantitySelector.value);
-
-    if (!matchingItem) {
-      cart.push({
-        productId,
-        quantity,
-      });
-    } else {
-      matchingItem.quantity += quantity;
-    }
-
-    let cartQuantity = 0;
-    cart.forEach((item) => (cartQuantity += item.quantity));
-    document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
-    document
-      .querySelector(`.js-added-to-cart-${productId}`)
-      .classList.add("added-message");
-
-    setTimeout(() => {
-      if (addedMessageTimeout[productId]) {
-        clearTimeout(addedMessageTimeout[productId]);
-      }
-
-      const timeoutId = setTimeout(() => {
-        document
-          .querySelector(`.js-added-to-cart-${productId}`)
-          .classList.remove("added-message");
-      }, 2000);
-
-      addedMessageTimeout[productId] = timeoutId;
-    });
+    addToCart(productId);
+    updateCartQuantity();
+    alertAddedMessage(productId);
   });
 });
